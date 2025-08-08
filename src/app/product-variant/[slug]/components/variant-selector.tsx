@@ -1,44 +1,40 @@
-"use client";
+import Image from "next/image";
+import Link from "next/link";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { productVariantTable } from "@/db/schema";
 
-import { addProductToCart } from "@/actions/add-cart-product";
-import { Button } from "@/components/ui/button";
-
-interface AddToCartButtonProps {
-  productVariantId: string;
-  quantity: number;
+interface VariantSelectorProps {
+  selectedVariantSlug: string;
+  variants: (typeof productVariantTable.$inferSelect)[];
 }
 
-const AddToCartButton = ({
-  productVariantId,
-  quantity,
-}: AddToCartButtonProps) => {
-  const queryClient = useQueryClient();
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["addProductToCart", productVariantId, quantity],
-    mutationFn: () =>
-      addProductToCart({
-        productVariantId,
-        quantity,
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
-  });
+const VariantSelector = ({
+  selectedVariantSlug,
+  variants,
+}: VariantSelectorProps) => {
   return (
-    <Button
-      className="rounded-full"
-      size="lg"
-      variant="outline"
-      disabled={isPending}
-      onClick={() => mutate()}
-    >
-      {isPending && <Loader2 className="animate-spin" />}
-      Adicionar à sacola
-    </Button>
+    <div className="flex items-center gap-4">
+      {variants.map((variant) => (
+        <Link
+          href={`/product-variant/${variant.slug}`}
+          key={variant.id}
+          className={
+            selectedVariantSlug === variant.slug
+              ? "border-primary rounded-xl border-2"
+              : ""
+          }
+        >
+          <Image
+            width={68}
+            height={68}
+            src={variant.imageUrl}
+            alt={variant.name}
+            className="rounded-xl"
+          />
+        </Link>
+      ))}
+    </div>
   );
 };
 
-export default AddToCartButton;
+export default VariantSelector;
