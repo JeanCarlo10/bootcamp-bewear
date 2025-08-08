@@ -5,9 +5,9 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/common/footer";
 import { Header } from "@/components/common/header";
 import ProductList from "@/components/common/product-list";
-import { formatCentsToBRL } from "@/components/helpers/money";
 import { db } from "@/db";
 import { productTable, productVariantTable } from "@/db/schema";
+import { formatCentsToBRL } from "@/helpers/money";
 
 import ProductActions from "./components/product-actions";
 import VariantSelector from "./components/variant-selector";

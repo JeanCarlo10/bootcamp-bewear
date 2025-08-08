@@ -4,7 +4,7 @@ import Link from "next/link";
 import { productTable, productVariantTable } from "@/db/schema";
 import { cn } from "@/lib/utils";
 
-import { formatCentsToBRL } from "../helpers/money";
+import { formatCentsToBRL } from "../../helpers/money";
 
 interface ProductItemProps {
   product: typeof productTable.$inferSelect & {
