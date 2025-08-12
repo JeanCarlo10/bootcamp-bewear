@@ -31,6 +31,7 @@ export const userRelations = relations(userTable, ({ many, one }) => ({
     fields: [userTable.id],
     references: [cartTable.userId],
   }),
+  orders: many(orderTable),
 }));
 
 export const sessionTable = pgTable("session", {
@@ -122,11 +123,13 @@ export const productVariantTable = pgTable("product_variant", {
 
 export const productVariantRelations = relations(
   productVariantTable,
-  ({ one }) => ({
+  ({ one, many }) => ({
     product: one(productTable, {
       fields: [productVariantTable.productId],
       references: [productTable.id],
     }),
+    cartItems: many(cartItemTable),
+    orderItems: many(orderItemTable),
   }),
 );
 
@@ -152,7 +155,7 @@ export const shippingAddressTable = pgTable("shipping_address", {
 
 export const shippingAddressRelations = relations(
   shippingAddressTable,
-  ({ one }) => ({
+  ({ one, many }) => ({
     user: one(userTable, {
       fields: [shippingAddressTable.userId],
       references: [userTable.id],
@@ -161,6 +164,7 @@ export const shippingAddressRelations = relations(
       fields: [shippingAddressTable.id],
       references: [cartTable.shippingAddressId],
     }),
+    orders: many(orderTable),
   }),
 );
 
